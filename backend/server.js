@@ -3,8 +3,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import Feedback from "./feedback.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(()=>{
@@ -18,6 +21,18 @@ mongoose.connect(process.env.MONGODB_URI)
 
 
 const app=express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const frontendPath = path.join(__dirname, "../Frontend");
+
+app.use(express.static(frontendPath));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
 
 app.use(cors())
 app.use(express.json())
