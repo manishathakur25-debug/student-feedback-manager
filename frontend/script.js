@@ -8,8 +8,8 @@ feedbackForm.addEventListener("submit", async function (event) {
     const rating = document.getElementById("rating").value;
     const comment = document.getElementById("comment").value;
 
-     try {
-        const response = await fetch("http://localhost:5000/feedback", {
+    try {
+        const response = await fetch("/feedback", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -25,6 +25,7 @@ feedbackForm.addEventListener("submit", async function (event) {
 
         alert(data.message);
         feedbackForm.reset();
+        getFeedbacks();
 
     } catch (error) {
         console.error("Error:", error);
@@ -32,16 +33,12 @@ feedbackForm.addEventListener("submit", async function (event) {
     }
 });
 
-
-
-
 async function getFeedbacks() {
     try {
-        const response = await fetch("http://localhost:5000/feedback");
+        const response = await fetch("/feedback");
         const feedbacks = await response.json();
 
         const feedbackList = document.getElementById("feedbackList");
-
         feedbackList.innerHTML = "";
 
         feedbacks.forEach((feedback) => {
